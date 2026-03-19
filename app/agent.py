@@ -41,16 +41,6 @@ You help creators plan posts, choose hashtags, and identify trending topics.
 Use your tools when the user asks about trends or platform-specific content."""
 
 
-agent = create_react_agent(
-
-    model=llm,
-
-    tools=[get_trending_topics],
-
-    prompt=system_prompt
-
-)
-
 @tool
 def get_content_ideas(niche: str) -> str:
     """Get content format ideas for a given niche or topic.
@@ -62,3 +52,16 @@ def get_content_ideas(niche: str) -> str:
         "3) Story series — share 3 quick tips over 3 consecutive days. "
         "4) Long-form video — do a full tutorial or deep dive on a topic your audience keeps asking about."
     )
+
+
+
+agent = create_react_agent(
+
+    model=llm,
+
+    tools=[get_trending_topics, get_content_ideas],
+
+    prompt=system_prompt
+
+)
+

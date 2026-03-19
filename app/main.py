@@ -10,6 +10,11 @@ from dotenv import load_dotenv
 
 from app.agent import agent
 
+from fastapi.middleware.cors import CORSMiddleware
+
+from fastapi.responses import HTMLResponse
+
+
 
 load_dotenv()
 
@@ -24,6 +29,12 @@ app = FastAPI(
 
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Tighten this in production
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class ChatRequest(BaseModel):
 
@@ -59,3 +70,9 @@ async def chat(request: ChatRequest):
     except Exception as e:
 
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/", response_class=HTMLResponse)
+async def serve_frontend():
+    with open("index.html") as f:
+        return f.read()
